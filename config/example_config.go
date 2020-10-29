@@ -18,6 +18,7 @@ package config
 
 import (
 	"encoding/json"
+	"time"
 
 	"gopkg.in/yaml.v2"
 )
@@ -110,12 +111,12 @@ func NewV1ExampleConfig() *Config {
 				&Keytab{
 					Principal: "superman@EXAMPLE.COM",
 					Seed:      "nIKSXX9nJU5klguCrzP3d",
-					Lifetime:  60,
+					Lifetime:  time.Duration(60) * time.Second,
 				},
 				&Keytab{
 					Principal: "birdman@EXAMPLE.COM",
 					Seed:      "CibIcE3XhRyXrngddsQzN",
-					Lifetime:  60,
+					Lifetime:  time.Duration(60) * time.Second,
 				},
 			},
 
@@ -123,17 +124,17 @@ func NewV1ExampleConfig() *Config {
 				&Secret{
 					Name:     "secret1",
 					Seed:     "E17cUHMYtU+FvpK3kig7o5",
-					Lifetime: 600,
+					Lifetime: time.Duration(60) * time.Second,
 				},
 				&Secret{
 					Name:     "secret2",
 					Seed:     "7Y3dzQcEvx+cPpRl4Qgti2",
-					Lifetime: 600,
+					Lifetime: time.Duration(120) * time.Second,
 				},
 				&Secret{
 					Name:     "secret3",
 					Seed:     "6zarcky7proZTYw8PEVzzT",
-					Lifetime: 600,
+					Lifetime: time.Duration(240) * time.Second,
 				},
 			},
 		},

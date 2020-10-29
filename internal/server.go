@@ -34,7 +34,7 @@ import (
 // Config ...
 type Config struct {
 	Policy                                                              string
-	NonceLifetime, SecretMaxLifetime, SecretMinLifetime, KeytabLifetime int64
+	NonceLifetime, SecretMaxLifetime, SecretMinLifetime, KeytabLifetime time.Duration
 	SecretSecrets                                                       []*libtokenmachine.Secret
 	KeytabKeytabs                                                       []*libtokenmachine.Keytab
 	Listen, TLSCert, TLSKey                                             string

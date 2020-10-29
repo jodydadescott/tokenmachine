@@ -109,10 +109,12 @@ github.com/inconshreveable/mousetrap v1.0.0 h1:Z8tu5sraLXCXIcARxBp/8cbvlwVa7Z1NH
 github.com/inconshreveable/mousetrap v1.0.0/go.mod h1:PxqpIevigyE2G7u3NXJIT2ANytuPF1OarO4DADm73n8=
 github.com/jinzhu/copier v0.0.0-20201025035756-632e723a6687 h1:bWXum+xWafUxxJpcXnystwg5m3iVpPYtrGJFc1rjfLc=
 github.com/jinzhu/copier v0.0.0-20201025035756-632e723a6687/go.mod h1:24xnZezI2Yqac9J61UC6/dG/k76ttpq0DdJI3QmUvro=
-github.com/jodydadescott/libtokenmachine v0.0.0-20201028221414-542312bc0ae0 h1:LEiYiELX0DnfNSwmyfXscFNKUnvcf6DIuxg5jyg2ESo=
-github.com/jodydadescott/libtokenmachine v0.0.0-20201028221414-542312bc0ae0/go.mod h1:4iKyQ5rgVLZk4qn/8F9tYeBXkkJ1q+BEa3lVfUQryjI=
-github.com/jodydadescott/libtokenmachine v1.0.0 h1:aJdiVrc5kCYVKSgNGDrsNCKpiiNJor9FKxWQJIumLDk=
-github.com/jodydadescott/libtokenmachine v1.0.0/go.mod h1:4iKyQ5rgVLZk4qn/8F9tYeBXkkJ1q+BEa3lVfUQryjI=
+github.com/jodydadescott/libtokenmachine v1.0.2 h1:Tio5NDn1D7QJyZqkLV5ds3UirucQ5Cab+JK+zWJH19o=
+github.com/jodydadescott/libtokenmachine v1.0.2/go.mod h1:4iKyQ5rgVLZk4qn/8F9tYeBXkkJ1q+BEa3lVfUQryjI=
+github.com/jodydadescott/libtokenmachine v1.0.3 h1:0fgf6N26TiBKumkkzaOnbvm4yU53sC9PvJuODRLN2ds=
+github.com/jodydadescott/libtokenmachine v1.0.3/go.mod h1:4iKyQ5rgVLZk4qn/8F9tYeBXkkJ1q+BEa3lVfUQryjI=
+github.com/jodydadescott/libtokenmachine v1.0.4 h1:QoSA9p9Im+KlUDy9STMMQxAdvWsThYv6QZU3ACf7l+U=
+github.com/jodydadescott/libtokenmachine v1.0.4/go.mod h1:4iKyQ5rgVLZk4qn/8F9tYeBXkkJ1q+BEa3lVfUQryjI=
 github.com/jonboulle/clockwork v0.1.0/go.mod h1:Ii8DK3G1RaLaWxj9trq07+26W01tbo22gdxWY5EU2bo=
 github.com/json-iterator/go v1.1.6/go.mod h1:+SdeFBvtyEkXs7REEP0seUULqWtbJapLOCVDaaPEHmU=
 github.com/jstemmer/go-junit-report v0.0.0-20190106144839-af01ea7f8024/go.mod h1:6v2b51hI/fHJwM22ozAgKL4VKDeJcHhJFhtBdhmNjmU=

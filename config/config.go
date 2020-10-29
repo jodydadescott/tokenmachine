@@ -18,6 +18,7 @@ package config
 
 import (
 	"encoding/json"
+	"time"
 
 	"github.com/jinzhu/copier"
 	"gopkg.in/yaml.v2"
@@ -43,9 +44,9 @@ type Network struct {
 
 // Policy Config
 type Policy struct {
-	Policy         string `json:"policy,omitempty" yaml:"policy,omitempty"`
-	NonceLifetime  int64  `json:"nonceLifetime,omitempty" yaml:"nonceLifetime,omitempty"`
-	KeytabLifetime int64  `json:"keytabLifetime,omitempty" yaml:"keytabLifetime,omitempty"`
+	Policy         string        `json:"policy,omitempty" yaml:"policy,omitempty"`
+	NonceLifetime  time.Duration `json:"nonceLifetime,omitempty" yaml:"nonceLifetime,omitempty"`
+	KeytabLifetime time.Duration `json:"keytabLifetime,omitempty" yaml:"keytabLifetime,omitempty"`
 }
 
 // Logging Config
@@ -64,16 +65,16 @@ type Data struct {
 
 // Secret Config
 type Secret struct {
-	Name     string `json:"name,omitempty" yaml:"name,omitempty"`
-	Seed     string `json:"seed,omitempty" yaml:"seed,omitempty"`
-	Lifetime int64  `json:"lifetime,omitempty" yaml:"lifetime,omitempty"`
+	Name     string        `json:"name,omitempty" yaml:"name,omitempty"`
+	Seed     string        `json:"seed,omitempty" yaml:"seed,omitempty"`
+	Lifetime time.Duration `json:"lifetime,omitempty" yaml:"lifetime,omitempty"`
 }
 
 // Keytab Config
 type Keytab struct {
-	Principal string `json:"principal,omitempty" yaml:"name,omitempty"`
-	Seed      string `json:"seed,omitempty" yaml:"seed,omitempty"`
-	Lifetime  int64  `json:"lifetime,omitempty" yaml:"lifetime,omitempty"`
+	Principal string        `json:"principal,omitempty" yaml:"name,omitempty"`
+	Seed      string        `json:"seed,omitempty" yaml:"seed,omitempty"`
+	Lifetime  time.Duration `json:"lifetime,omitempty" yaml:"lifetime,omitempty"`
 }
 
 // NewConfig Returns new V1 Config
