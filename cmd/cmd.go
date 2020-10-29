@@ -33,7 +33,7 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "ktb-server",
+	Use:   "tokenmachine",
 	Short: "get kerberos keytabs with oauth tokens",
 	Long: `Provides expiring kerberos keytabs to holders of bearer tokens by validating token is
  permitted keytab by policy. Policy is in the form of Open Policy Agent (OPA). Keytabs

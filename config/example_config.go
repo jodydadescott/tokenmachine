@@ -97,8 +97,8 @@ func NewV1ExampleConfig() *Config {
 		},
 		Policy: &Policy{
 			Policy:         examplePolicy,
-			NonceLifetime:  60,
-			KeytabLifetime: 300,
+			NonceLifetime:  time.Duration(60) * time.Second,
+			KeytabLifetime: time.Duration(600) * time.Second,
 		},
 		Logging: &Logging{
 			LogLevel:         "debug",
