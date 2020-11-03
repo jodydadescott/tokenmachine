@@ -119,6 +119,12 @@ github.com/jodydadescott/libtokenmachine v1.0.5 h1:RmZHP6H5JiWbwk+B4l7mA+oS69+0K
 github.com/jodydadescott/libtokenmachine v1.0.5/go.mod h1:4iKyQ5rgVLZk4qn/8F9tYeBXkkJ1q+BEa3lVfUQryjI=
 github.com/jodydadescott/libtokenmachine v1.0.6 h1:7v57hOLwvLNTjA3FCjsgDUujQTFnNf8nl/BIZR4zQf0=
 github.com/jodydadescott/libtokenmachine v1.0.6/go.mod h1:4iKyQ5rgVLZk4qn/8F9tYeBXkkJ1q+BEa3lVfUQryjI=
+github.com/jodydadescott/libtokenmachine v1.0.7 h1:Hf2tJDy8BscEloGS0R5R2dzIDP8LIzkdkY2kDrTqVDg=
+github.com/jodydadescott/libtokenmachine v1.0.7/go.mod h1:4iKyQ5rgVLZk4qn/8F9tYeBXkkJ1q+BEa3lVfUQryjI=
+github.com/jodydadescott/libtokenmachine v1.0.8 h1:vNmAv6ZoV1tSmI8ysvIbShLftyHjFXW1x0Yy9t9IShA=
+github.com/jodydadescott/libtokenmachine v1.0.8/go.mod h1:4iKyQ5rgVLZk4qn/8F9tYeBXkkJ1q+BEa3lVfUQryjI=
+github.com/jodydadescott/libtokenmachine v1.0.9 h1:1cWMiOItv8k3geIsa16frYK9letU5sFGUZNUIFutOgk=
+github.com/jodydadescott/libtokenmachine v1.0.9/go.mod h1:4iKyQ5rgVLZk4qn/8F9tYeBXkkJ1q+BEa3lVfUQryjI=
 github.com/jonboulle/clockwork v0.1.0/go.mod h1:Ii8DK3G1RaLaWxj9trq07+26W01tbo22gdxWY5EU2bo=
 github.com/json-iterator/go v1.1.6/go.mod h1:+SdeFBvtyEkXs7REEP0seUULqWtbJapLOCVDaaPEHmU=
 github.com/jstemmer/go-junit-report v0.0.0-20190106144839-af01ea7f8024/go.mod h1:6v2b51hI/fHJwM22ozAgKL4VKDeJcHhJFhtBdhmNjmU=

@@ -40,9 +40,10 @@ auth_get_nonce {
 }
 
 auth_nonce {
-   # Verify that the request nonce matches the expected nonce. Our token provider
-   # has the nonce in the audience field under claims
-   input.claims.aud == input.nonce
+   # The input contains a set of all of the current valid nonces. For our
+   # example here we expect the claim audience to have a nonce that will match
+   # one of tne entries in the nonces set.
+   input.nonces[_] == input.claims.aud
 }
 
 auth_get_keytab {
@@ -55,10 +56,9 @@ auth_get_keytab {
 }
 
 auth_get_secret {
-   # Verify that the request nonce matches the expected nonce. Our token provider
-   # has the nonce in the audience field under claims
    auth_base
    auth_nonce
+   input.claims.service.secrets[_] == input.secret
 }
 `
 

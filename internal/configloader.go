@@ -296,27 +296,6 @@ func (t *Loader) loadFromFile(input string) error {
 
 }
 
-// LoadFromLocal Load data from registry. Its primary purpose is
-// to load config from the Windows registry. The implementation is
-// platform specific.
-// func (t *Loader) LoadFromLocal() error {
-
-// 	if runtime.GOOS == "windows" {
-// 		configString, err := GetRuntimeConfigString()
-// 		if err != nil {
-// 			return err
-// 		}
-
-// 		err = t.LoadFrom(configString)
-// 		if err != nil {
-// 			return err
-// 		}
-
-// 	}
-
-// 	return nil
-// }
-
 func getHTTPClient() *http.Client {
 	return &http.Client{
 		Transport: &http.Transport{

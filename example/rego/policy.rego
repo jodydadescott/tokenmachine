@@ -1,11 +1,10 @@
-package kbridge
+package main
 
-# Input data format
 # {
 #   "claims": {
 #     "alg": "EC",
 #     "kid": "donut",
-#     "iss": "https://api.console.aporeto.com/v/1/namespaces/5ddc396b9facec0001d3c886/oauthinfo",
+#     "iss": "abc123",
 #     "exp": 1599844897,
 #     "aud": "daisy",
 #     "service": {
@@ -13,11 +12,12 @@ package kbridge
 #     }
 #   },
 #   "principal": "user1@example.com",
-#   "nonce": "daisy"
+#   "nonces": ["daisy", "abigale", "poppy"]
 # }
 
 default auth_get_nonce = false
 default auth_get_keytab = false
+default auth_get_secret = false
 
 auth_base {
    # Match Issuer
@@ -29,9 +29,10 @@ auth_get_nonce {
 }
 
 auth_nonce {
-   # Verify that the request nonce matches the expected nonce. Our token provider
-   # has the nonce in the audience field under claims
-   input.claims.aud == input.nonce
+   # The input contains a set of all of the current valid nonces. For our
+   # example here we expect the claim audience to have a nonce that will match
+   # one of tne entries in the nonces set.
+   input.nonces[_] == input.claims.aud
 }
 
 auth_get_keytab {
@@ -41,4 +42,9 @@ auth_get_keytab {
    auth_base
    auth_nonce
    split(input.claims.service.keytab,",")[_] == input.principal
+}
+
+auth_get_keytab {
+   auth_base
+   auth_nonce
 }

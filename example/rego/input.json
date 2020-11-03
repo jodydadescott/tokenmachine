@@ -10,5 +10,5 @@
     }
   },
   "principal": "user1@example.com",
-  "nonce": "daisy"
+  "nonces": ["daisy", "abigale", "poppy"]
 }
