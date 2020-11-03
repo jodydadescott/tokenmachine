@@ -11,18 +11,18 @@
 # 2) Using the token get a nonce from the Keytab server
 # 3) Using the nonce attribute value get a new token from the token server with the
 #    audience (aud) set to the nonce value. This is what prevents a replay attack.
-# 4) Using the new token, the nonce value and the name of the desired principal
+# 4) Using the new token, the nonce value and the name of the desired NAME
 #    request the keytab from the Keytab server
 # 5) Decode the base64file attribute from the Keytab into a file
-# 6) Using the principal name attribute from the Keytab principal attribute
-#    obtain a TGT from the Kerberos server. Note that the principal attribute
-#    will differ from the original principal.
+# 6) Using the NAME name attribute from the Keytab NAME attribute
+#    obtain a TGT from the Kerberos server. Note that the NAME attribute
+#    will differ from the original NAME.
 # 7) Mount CIFS filesystem
 # 8) Write Random string to mounted filesystem
 # 9) Un-mount CIFS filesystem
 ########################################################################################
 
-PRINCIPAL="superman@EXAMPLE.COM"
+NAME="superman"
 SERVER="35.153.18.49:8080"
 TOKEN_SERVER="169.254.254.1"
 
@@ -37,7 +37,7 @@ function main() {
   which curl > /dev/null 2>&1 || { err "curl not found in path"; return 2; }
   which jq > /dev/null 2>&1 || { err "jq not found in path"; return 2; }
 
-  [[ $PRINCIPAL ]] || { err "Missing env var PRINCIPAL"; return 2; }
+  [[ $NAME ]] || { err "Missing env var NAME"; return 2; }
   [[ $SERVER ]] || { err "Missing env var SERVER"; return 2; }
   [[ $TOKEN_SERVER ]] || { err "Missing env var TOKENB_SERVER"; return 2; }
 
@@ -79,19 +79,19 @@ function run() {
   }
   print_token "$token"
 
-  log "${YELLOW}Get keytab with token from above and principal ${PURPLE}${PRINCIPAL}${YELLOW}->${NC}\n"
-  keytab=$(httpGet -H "Authorization: Bearer $token" "${SERVER}"/getkeytab\?principal="${PRINCIPAL}") || {
+  log "${YELLOW}Get keytab with token from above and NAME ${PURPLE}${NAME}${YELLOW}->${NC}\n"
+  keytab=$(httpGet -H "Authorization: Bearer $token" "${SERVER}"/getkeytab\?name="${NAME}") || {
     log_fail
     return 3
   }
   echo "$keytab" | jq
 
   echo "$keytab" | jq -r '.base64file' | base64 -d > "$tmp/keytab"
-  local principal_alias
-  principal_alias=$(echo "$keytab" | jq -r '.principal')
+  local principal
+  principal=$(echo "$keytab" | jq -r '.principal')
 
   log "${YELLOW}Authenticate with Active Directory / Kerberos Server: ${NC}"
-  sudo /usr/bin/kinit -V -k -t "$tmp/keytab" "${principal_alias}" > /dev/null 2>&1 || {
+  sudo /usr/bin/kinit -V -k -t "$tmp/keytab" "${principal}" > /dev/null 2>&1 || {
     log_fail
     return 3
   }
@@ -99,7 +99,7 @@ function run() {
 }
 
 function write() {
-  log "${YELLOW}Mount Windows CIFS share with user ${PURPLE}${PRINCIPAL}${YELLOW}: ${NC}"
+  log "${YELLOW}Mount Windows CIFS share with user ${PURPLE}${NAME}${YELLOW}: ${NC}"
   sudo mount /data || { log_fail; return 3; }
   log_ok
 

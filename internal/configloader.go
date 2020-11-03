@@ -79,6 +79,7 @@ func (t *Loader) ServerConfig() (*Config, error) {
 		if t.Config.Data.Keytabs != nil {
 			for _, s := range t.Config.Data.Keytabs {
 				serverConfig.KeytabKeytabs = append(serverConfig.KeytabKeytabs, &libtokenmachine.Keytab{
+					Name:      s.Name,
 					Principal: s.Principal,
 					Seed:      s.Seed,
 					Lifetime:  s.Lifetime,
@@ -86,9 +87,9 @@ func (t *Loader) ServerConfig() (*Config, error) {
 			}
 		}
 
-		if t.Config.Data.Secrets != nil {
-			for _, s := range t.Config.Data.Secrets {
-				serverConfig.SecretSecrets = append(serverConfig.SecretSecrets, &libtokenmachine.Secret{
+		if t.Config.Data.SharedSecrets != nil {
+			for _, s := range t.Config.Data.SharedSecrets {
+				serverConfig.SecretSecrets = append(serverConfig.SecretSecrets, &libtokenmachine.SharedSecret{
 					Name:     s.Name,
 					Seed:     s.Seed,
 					Lifetime: s.Lifetime,

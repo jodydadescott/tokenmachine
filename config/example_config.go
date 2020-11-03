@@ -23,7 +23,8 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-var examplePolicy = `
+var (
+	examplePolicy = `
 package main
 
 default auth_get_nonce = false
@@ -47,22 +48,29 @@ auth_nonce {
 }
 
 auth_get_keytab {
-   # The nonce must be validated and then the principal. This is done by splitting the
-   # principals in the claim service.keytab by the comma into a set and checking for
-   # match with requested principal
+   # 1) Validate defaults with auth_base
+   # 2) Validate the nonce with auth_nonce
+   # 3) Validate the claims are allowed to obtain the keytab with the given name
+   #    by checking to see if name exist in claim keytabs. We split the value
+   #    on colon and look for any match.
    auth_base
    auth_nonce
-   split(input.claims.service.keytab,",")[_] == input.principal
+   split(input.claims.service.keytabs,":")[_] == input.name
 }
 
 auth_get_secret {
+   # 1) Validate defaults with auth_base
+   # 2) Validate the nonce with auth_nonce
+   # 3) Validate the claims are allowed to obtain the secret with the given name
+   #    by checking to see if name exist in claim secrets. We split the value
+   #    on comma and look for any match.
    auth_base
    auth_nonce
-   input.claims.service.secrets[_] == input.secret
+   split(input.claims.service.secrets,":")[_] == input.name
 }
 `
 
-var exampleTLSCert = `-----BEGIN CERTIFICATE-----
+	exampleTLSCert = `-----BEGIN CERTIFICATE-----
 ................................................................
 ................................................................
 ................................................................
@@ -77,12 +85,13 @@ var exampleTLSCert = `-----BEGIN CERTIFICATE-----
 ....................................
 -----END CERTIFICATE-----`
 
-var exampleTLSKey = `-----BEGIN EC PRIVATE KEY-----
+	exampleTLSKey = `-----BEGIN EC PRIVATE KEY-----
 ................................................................
 ................................................................
 ................................................................
 ................................
 -----END EC PRIVATE KEY-----`
+)
 
 // NewV1ExampleConfig New example config
 func NewV1ExampleConfig() *Config {
@@ -109,29 +118,31 @@ func NewV1ExampleConfig() *Config {
 		Data: &Data{
 			Keytabs: []*Keytab{
 				&Keytab{
+					Name:      "superman",
 					Principal: "superman@EXAMPLE.COM",
 					Seed:      "nIKSXX9nJU5klguCrzP3d",
 					Lifetime:  time.Duration(60) * time.Second,
 				},
 				&Keytab{
+					Name:      "birdman",
 					Principal: "birdman@EXAMPLE.COM",
 					Seed:      "CibIcE3XhRyXrngddsQzN",
 					Lifetime:  time.Duration(60) * time.Second,
 				},
 			},
 
-			Secrets: []*Secret{
-				&Secret{
+			SharedSecrets: []*SharedSecret{
+				&SharedSecret{
 					Name:     "secret1",
 					Seed:     "E17cUHMYtU+FvpK3kig7o5",
 					Lifetime: time.Duration(60) * time.Second,
 				},
-				&Secret{
+				&SharedSecret{
 					Name:     "secret2",
 					Seed:     "7Y3dzQcEvx+cPpRl4Qgti2",
 					Lifetime: time.Duration(120) * time.Second,
 				},
-				&Secret{
+				&SharedSecret{
 					Name:     "secret3",
 					Seed:     "6zarcky7proZTYw8PEVzzT",
 					Lifetime: time.Duration(240) * time.Second,

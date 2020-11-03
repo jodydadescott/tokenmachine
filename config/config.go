@@ -59,12 +59,12 @@ type Logging struct {
 
 // Data Config
 type Data struct {
-	Keytabs []*Keytab `json:"keytabs,omitempty" yaml:"keytabs,omitempty"`
-	Secrets []*Secret `json:"secrets,omitempty" yaml:"secrets,omitempty"`
+	Keytabs       []*Keytab       `json:"keytabs,omitempty" yaml:"keytabs,omitempty"`
+	SharedSecrets []*SharedSecret `json:"sharedSecrets,omitempty" yaml:"sharedSecrets,omitempty"`
 }
 
-// Secret Config
-type Secret struct {
+// SharedSecret Config
+type SharedSecret struct {
 	Name     string        `json:"name,omitempty" yaml:"name,omitempty"`
 	Seed     string        `json:"seed,omitempty" yaml:"seed,omitempty"`
 	Lifetime time.Duration `json:"lifetime,omitempty" yaml:"lifetime,omitempty"`
@@ -72,7 +72,8 @@ type Secret struct {
 
 // Keytab Config
 type Keytab struct {
-	Principal string        `json:"principal,omitempty" yaml:"name,omitempty"`
+	Name      string        `json:"name,omitempty" yaml:"name,omitempty"`
+	Principal string        `json:"principal,omitempty" yaml:"principal,omitempty"`
 	Seed      string        `json:"seed,omitempty" yaml:"seed,omitempty"`
 	Lifetime  time.Duration `json:"lifetime,omitempty" yaml:"lifetime,omitempty"`
 }
@@ -206,9 +207,9 @@ func (t *Config) Merge(config *Config) {
 			}
 		}
 
-		if config.Data.Secrets != nil {
-			for _, s := range config.Data.Secrets {
-				t.Data.Secrets = append(t.Data.Secrets, s)
+		if config.Data.SharedSecrets != nil {
+			for _, s := range config.Data.SharedSecrets {
+				t.Data.SharedSecrets = append(t.Data.SharedSecrets, s)
 			}
 		}
 

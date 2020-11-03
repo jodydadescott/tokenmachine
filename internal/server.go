@@ -35,7 +35,7 @@ import (
 type Config struct {
 	Policy                                                              string
 	NonceLifetime, SecretMaxLifetime, SecretMinLifetime, KeytabLifetime time.Duration
-	SecretSecrets                                                       []*libtokenmachine.Secret
+	SecretSecrets                                                       []*libtokenmachine.SharedSecret
 	KeytabKeytabs                                                       []*libtokenmachine.Keytab
 	Listen, TLSCert, TLSKey                                             string
 	HTTPPort, HTTPSPort                                                 int
@@ -184,13 +184,13 @@ func (t *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	case "/getkeytab":
 
-		principal := getKey(r, "principal")
-		if principal == "" {
-			http.Error(w, newErrorResponse("Principal required")+"\n", http.StatusConflict)
+		name := getKey(r, "name")
+		if name == "" {
+			http.Error(w, newErrorResponse("Parameter 'name' required")+"\n", http.StatusConflict)
 			return
 		}
 
-		keytab, err := t.libTokenMachine.GetKeytab(r.Context(), token, principal)
+		keytab, err := t.libTokenMachine.GetKeytab(r.Context(), token, name)
 		if handleERR(w, err) {
 			return
 		}
