@@ -33,12 +33,12 @@ import (
 
 // Config ...
 type Config struct {
-	Policy                                                              string
-	NonceLifetime, SecretMaxLifetime, SecretMinLifetime, KeytabLifetime time.Duration
-	SecretSecrets                                                       []*libtokenmachine.SharedSecret
-	KeytabKeytabs                                                       []*libtokenmachine.Keytab
-	Listen, TLSCert, TLSKey                                             string
-	HTTPPort, HTTPSPort                                                 int
+	Policy                                              string
+	NonceLifetime, KeytabLifetime, SharedSecretLifetime time.Duration
+	SecretSecrets                                       []*libtokenmachine.SharedSecret
+	KeytabKeytabs                                       []*libtokenmachine.Keytab
+	Listen, TLSCert, TLSKey                             string
+	HTTPPort, HTTPSPort                                 int
 }
 
 // Server ...
@@ -76,6 +76,7 @@ func (config *Config) Build() (*Server, error) {
 		SecretSecrets:  config.SecretSecrets,
 		KeytabKeytabs:  config.KeytabKeytabs,
 		KeytabLifetime: config.KeytabLifetime,
+		SecretLifetime: config.SharedSecretLifetime,
 	}
 
 	libTokenMachine, err := serverlib.NewInstance(libTokenMachineConfig)

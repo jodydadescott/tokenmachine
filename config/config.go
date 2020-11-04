@@ -44,9 +44,10 @@ type Network struct {
 
 // Policy Config
 type Policy struct {
-	Policy         string        `json:"policy,omitempty" yaml:"policy,omitempty"`
-	NonceLifetime  time.Duration `json:"nonceLifetime,omitempty" yaml:"nonceLifetime,omitempty"`
-	KeytabLifetime time.Duration `json:"keytabLifetime,omitempty" yaml:"keytabLifetime,omitempty"`
+	Policy               string        `json:"policy,omitempty" yaml:"policy,omitempty"`
+	NonceLifetime        time.Duration `json:"nonceLifetime,omitempty" yaml:"nonceLifetime,omitempty"`
+	SharedSecretLifetime time.Duration `json:"sharedSecretLifetime,omitempty" yaml:"sharedSecretLifetime,omitempty"`
+	KeytabLifetime       time.Duration `json:"keytabLifetime,omitempty" yaml:"keytabLifetime,omitempty"`
 }
 
 // Logging Config
@@ -59,8 +60,8 @@ type Logging struct {
 
 // Data Config
 type Data struct {
-	Keytabs       []*Keytab       `json:"keytabs,omitempty" yaml:"keytabs,omitempty"`
 	SharedSecrets []*SharedSecret `json:"sharedSecrets,omitempty" yaml:"sharedSecrets,omitempty"`
+	Keytabs       []*Keytab       `json:"keytabs,omitempty" yaml:"keytabs,omitempty"`
 }
 
 // SharedSecret Config
@@ -76,6 +77,58 @@ type Keytab struct {
 	Principal string        `json:"principal,omitempty" yaml:"principal,omitempty"`
 	Seed      string        `json:"seed,omitempty" yaml:"seed,omitempty"`
 	Lifetime  time.Duration `json:"lifetime,omitempty" yaml:"lifetime,omitempty"`
+}
+
+func (t *Data) addSharedSecret(sharedSecret *SharedSecret) {
+
+	var existing *SharedSecret
+	for _, v := range t.SharedSecrets {
+		if v.Name == sharedSecret.Name {
+			existing = v
+		}
+	}
+
+	if existing == nil {
+		t.SharedSecrets = append(t.SharedSecrets, sharedSecret)
+		return
+	}
+
+	if sharedSecret.Seed != "" {
+		existing.Seed = sharedSecret.Seed
+	}
+
+	if sharedSecret.Lifetime > 0 {
+		existing.Lifetime = sharedSecret.Lifetime
+	}
+
+}
+
+func (t *Data) addKeytab(keytab *Keytab) {
+
+	var existing *Keytab
+	for _, v := range t.Keytabs {
+		if v.Name == keytab.Name {
+			existing = v
+		}
+	}
+
+	if existing == nil {
+		t.Keytabs = append(t.Keytabs, keytab)
+		return
+	}
+
+	if keytab.Principal != "" {
+		existing.Principal = keytab.Principal
+	}
+
+	if keytab.Seed != "" {
+		existing.Seed = keytab.Seed
+	}
+
+	if keytab.Lifetime > 0 {
+		existing.Lifetime = keytab.Lifetime
+	}
+
 }
 
 // NewConfig Returns new V1 Config
@@ -161,6 +214,10 @@ func (t *Config) Merge(config *Config) {
 			t.Policy.KeytabLifetime = config.Policy.KeytabLifetime
 		}
 
+		if config.Policy.SharedSecretLifetime > 0 {
+			t.Policy.SharedSecretLifetime = config.Policy.SharedSecretLifetime
+		}
+
 	}
 
 	if config.Logging != nil {
@@ -203,13 +260,13 @@ func (t *Config) Merge(config *Config) {
 
 		if config.Data.Keytabs != nil {
 			for _, s := range config.Data.Keytabs {
-				t.Data.Keytabs = append(t.Data.Keytabs, s)
+				t.Data.addKeytab(s)
 			}
 		}
 
 		if config.Data.SharedSecrets != nil {
 			for _, s := range config.Data.SharedSecrets {
-				t.Data.SharedSecrets = append(t.Data.SharedSecrets, s)
+				t.Data.addSharedSecret(s)
 			}
 		}
 

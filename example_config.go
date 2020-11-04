@@ -105,9 +105,10 @@ func NewV1ExampleConfig() *Config {
 			TLSKey:    exampleTLSKey,
 		},
 		Policy: &Policy{
-			Policy:         examplePolicy,
-			NonceLifetime:  time.Duration(60) * time.Second,
-			KeytabLifetime: time.Duration(600) * time.Second,
+			Policy:               examplePolicy,
+			NonceLifetime:        time.Duration(60) * time.Second,
+			SharedSecretLifetime: time.Duration(600) * time.Second,
+			KeytabLifetime:       time.Duration(600) * time.Second,
 		},
 		Logging: &Logging{
 			LogLevel:         "debug",
@@ -116,20 +117,6 @@ func NewV1ExampleConfig() *Config {
 			ErrorOutputPaths: []string{"stderr"},
 		},
 		Data: &Data{
-			Keytabs: []*Keytab{
-				&Keytab{
-					Name:      "superman",
-					Principal: "superman@EXAMPLE.COM",
-					Seed:      "nIKSXX9nJU5klguCrzP3d",
-					Lifetime:  time.Duration(60) * time.Second,
-				},
-				&Keytab{
-					Name:      "birdman",
-					Principal: "birdman@EXAMPLE.COM",
-					Seed:      "CibIcE3XhRyXrngddsQzN",
-					Lifetime:  time.Duration(60) * time.Second,
-				},
-			},
 
 			SharedSecrets: []*SharedSecret{
 				&SharedSecret{
@@ -146,6 +133,21 @@ func NewV1ExampleConfig() *Config {
 					Name:     "secret3",
 					Seed:     "6zarcky7proZTYw8PEVzzT",
 					Lifetime: time.Duration(240) * time.Second,
+				},
+			},
+
+			Keytabs: []*Keytab{
+				&Keytab{
+					Name:      "superman",
+					Principal: "superman@EXAMPLE.COM",
+					Seed:      "nIKSXX9nJU5klguCrzP3d",
+					Lifetime:  time.Duration(60) * time.Second,
+				},
+				&Keytab{
+					Name:      "birdman",
+					Principal: "birdman@EXAMPLE.COM",
+					Seed:      "CibIcE3XhRyXrngddsQzN",
+					Lifetime:  time.Duration(60) * time.Second,
 				},
 			},
 		},

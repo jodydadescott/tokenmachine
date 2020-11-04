@@ -72,6 +72,7 @@ func (t *Loader) ServerConfig() (*Config, error) {
 		serverConfig.Policy = t.Config.Policy.Policy
 		serverConfig.NonceLifetime = t.Config.Policy.NonceLifetime
 		serverConfig.KeytabLifetime = t.Config.Policy.KeytabLifetime
+		serverConfig.SharedSecretLifetime = t.Config.Policy.SharedSecretLifetime
 	}
 
 	if t.Config.Data != nil {
@@ -181,6 +182,75 @@ func (t *Loader) ZapConfig() (*zap.Config, error) {
 		zapConfig.Encoding = "json"
 		zapConfig.OutputPaths = append(zapConfig.OutputPaths, "stderr")
 		zapConfig.ErrorOutputPaths = append(zapConfig.ErrorOutputPaths, "stderr")
+
+	}
+
+	return zapConfig, nil
+
+}
+
+// ZapConfigWindows Returns Zap Config for Windows
+func (t *Loader) ZapConfigWindows() (*zap.Config, error) {
+
+	zapConfig := &zap.Config{
+		Development: false,
+		Sampling: &zap.SamplingConfig{
+			Initial:    100,
+			Thereafter: 100,
+		},
+		EncoderConfig: zap.NewProductionEncoderConfig(),
+	}
+
+	if t.Config.Logging != nil {
+
+		switch t.Config.Logging.LogLevel {
+
+		case "debug":
+			zapConfig.Level = zap.NewAtomicLevelAt(zapcore.DebugLevel)
+			break
+
+		case "info":
+			zapConfig.Level = zap.NewAtomicLevelAt(zapcore.InfoLevel)
+			break
+
+		case "warn":
+			zapConfig.Level = zap.NewAtomicLevelAt(zapcore.WarnLevel)
+			break
+
+		case "error":
+			zapConfig.Level = zap.NewAtomicLevelAt(zapcore.ErrorLevel)
+			break
+
+		case "":
+			zapConfig.Level = zap.NewAtomicLevelAt(zapcore.InfoLevel)
+
+		default:
+			return nil, fmt.Errorf("logging level must be debug, info (default), warn or error")
+		}
+
+		switch t.Config.Logging.LogFormat {
+
+		case "json":
+			zapConfig.Encoding = "json"
+			break
+
+		case "console":
+			zapConfig.Encoding = "console"
+			break
+
+		case "":
+			zapConfig.Encoding = "json"
+			break
+
+		default:
+			return nil, fmt.Errorf("logging format must be json (default) or console")
+
+		}
+
+	} else {
+
+		zapConfig.Level = zap.NewAtomicLevelAt(zapcore.InfoLevel)
+		zapConfig.Encoding = "json"
 
 	}
 

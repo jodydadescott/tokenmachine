@@ -1,0 +1,6 @@
+# Here we show how the seed can be stored in a seperate file
+apiVersion: V1
+data:
+  keytabs:
+    - name: superman
+      seed: nIKSXX9nJU5klguCrzP3d

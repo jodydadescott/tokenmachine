@@ -1,0 +1,87 @@
+# This is the config version.
+apiVersion: V1
+# THe interface to listen on. By default it is any.
+# listen: any
+# The port to run the HTTP and or HTTPS server on. If it is not set then it will not
+# be started. Either the HTTP or HTTPS server must be enabled. If the HTTPS server is
+# enabled both tlscert and tlsKey must be set
+network:
+  listen: any
+  httpPort: 8080
+  httpsPort: 8443
+  tlscert: |-
+    -----BEGIN CERTIFICATE-----
+    ................................................................
+    ................................................................
+    ................................................................
+    ................................................................
+    ................................................................
+    ................................................................
+    ................................................................
+    ................................................................
+    ................................................................
+    ................................................................
+    ................................................................
+    ....................................
+    -----END CERTIFICATE-----
+  tlsKey: |-
+    -----BEGIN EC PRIVATE KEY-----
+    ................................................................
+    ................................................................
+    ................................................................
+    ................................
+    -----END EC PRIVATE KEY-----
+policy:
+  # This is the lifetime of a nonce. By default it is 1 minute.
+  nonceLifetime: 1m0s
+
+  # This is the default lifetime that will be assigned to a Keytab if not defined
+  # in the specific Keytab config.
+  keytabLifetime: 10m0s
+
+  # This is the default lifetime that will be assigned to a SharedSecret if not defined
+  # in the specific SharedSecret config.
+  sharedSecretLifetime: 10m0s
+
+logging:
+  # This should be debug, info, warn or error. Default is info.
+  logLevel: info
+  # This should be json or console. Default is json.
+  logFormat: json
+
+  # The outputPaths and errorOutputPaths should be one or more of stderr, stdout, and/or
+  # file. By default it is stderr. When running as a Windows service events will be
+  # sent to the Windows Event Logger and these settings will be ignored.
+  outputPaths:
+    - stderr
+  errorOutputPaths:
+    - stderr
+
+# This is where we add the SharedSecrets and Keytabs. Each entity requires
+# a name and a seed. The lifetime is optional and if not defined the default
+# will be used (see keytabLifetime and sharedSecretLifetime). Keytabs enttities
+# also require a principal. This should be a valid user account plus the @ sign
+# and the Kerberos domain.
+#
+# Note: Consider storing the seed information in a seperate restricted file.
+#
+data:
+  keytabs:
+    - name: superman
+      principal: superman@EXAMPLE.COM
+      seed: nIKSXX9nJU5klguCrzP3d
+      lifetime: 1m0s
+    - name: birdman
+      principal: birdman@EXAMPLE.COM
+      seed: CibIcE3XhRyXrngddsQzN
+      lifetime: 1m0s
+  sharedSecrets:
+    - name: secret1
+      seed: E17cUHMYtU+FvpK3kig7o5
+      lifetime: 1m0s
+    - name: secret2
+      seed: 7Y3dzQcEvx+cPpRl4Qgti2
+      lifetime: 2m0s
+    - name: secret3
+      seed: 6zarcky7proZTYw8PEVzzT
+      lifetime: 4m0s

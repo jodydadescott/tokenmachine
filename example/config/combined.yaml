@@ -1,0 +1,80 @@
+apiVersion: V1
+network:
+  listen: any
+  httpPort: 8080
+  httpsPort: 8443
+  tlscert: |-
+    -----BEGIN CERTIFICATE-----
+    ................................................................
+    ................................................................
+    ................................................................
+    ................................................................
+    ................................................................
+    ................................................................
+    ................................................................
+    ................................................................
+    ................................................................
+    ................................................................
+    ................................................................
+    ....................................
+    -----END CERTIFICATE-----
+  tlsKey: |-
+    -----BEGIN EC PRIVATE KEY-----
+    ................................................................
+    ................................................................
+    ................................................................
+    ................................
+    -----END EC PRIVATE KEY-----
+policy:
+  policy: "package main # The package must be declared main\n\n# The functions auth_get_nonce,
+    auth_get_keytab and auth_get_secret must be\n# implemented and must return a boolean
+    value\n\ndefault auth_get_nonce = false\n\ndefault auth_get_keytab = false\n\ndefault
+    auth_get_secret = false\n\nauth_base {\n\t# Here we match the authorized OAUTH
+    issuer or issuers. It is very important that\n\t# this be defined and only for
+    authorized providers.\n\tinput.claims.iss == \"abc123\"\n}\n\nauth_get_nonce {\n\t#
+    Here we authenticate who can get a Nonce. In this example we are just calling\n\t#
+    the default auth_base\n\tauth_base\n}\n\nauth_nonce {\n\t# The input contains
+    a set of all of the current valid nonces. For our\n\t# example here we expect
+    the claim audience to have a nonce that will match\n\t# one of tne entries in
+    the nonces set. You might ask your self what prevents\n\t# an attacker from getting
+    a valid nonce and then launching a replay attack\n\t# with a captured token. This
+    would require the attacker to modify the token\n\t# to include the Nonce which
+    would corrupt the signature.\n\tinput.nonces[_] == input.claims.aud\n}\n\nauth_get_keytab
+    {\n\t# Here we call the default auth_base. Then we call auth_nonce to validate
+    the nonce.\n\t# Finally we check to see if the token bearer is authorized to obtain
+    the Keytab\n\t# by the name provided in the request. Notice that we expect the
+    claim to have\n\t# zero or more entries delineated by colon.\n\tauth_base\n\tauth_nonce\n\tsplit(input.claims.service.keytabs,
+    \":\")[_] == input.name\n}\n\nauth_get_secret {\n\t# This is almost identical
+    to auth_get_keytab. The only difference is that the\n\t# claim has been changed
+    from service.keytabs to service.secrets\n\tauth_base\n\tauth_nonce\n\tsplit(input.claims.service.secrets,
+    \":\")[_] == input.name\n}\n"
+  nonceLifetime: 1m0s
+  sharedSecretLifetime: 10m0s
+  keytabLifetime: 10m0s
+logging:
+  logLevel: info
+  logFormat: json
+  outputPaths:
+  - stderr
+  errorOutputPaths:
+  - stderr
+data:
+  sharedSecrets:
+  - name: secret1
+    seed: E17cUHMYtU+FvpK3kig7o5
+    lifetime: 1m0s
+  - name: secret2
+    seed: 7Y3dzQcEvx+cPpRl4Qgti2
+    lifetime: 2m0s
+  - name: secret3
+    seed: 6zarcky7proZTYw8PEVzzT
+    lifetime: 4m0s
+  keytabs:
+  - name: superman
+    principal: superman@EXAMPLE.COM
+    seed: nIKSXX9nJU5klguCrzP3d
+    lifetime: 1m0s
+  - name: birdman
+    principal: birdman@EXAMPLE.COM
+    seed: CibIcE3XhRyXrngddsQzN
+    lifetime: 1m0s

@@ -246,7 +246,7 @@ func (m *myservice) Execute(args []string, r <-chan svc.ChangeRequest, changes c
 		return false, 2
 	}
 
-	zapConfig, err := configLoader.ZapConfig()
+	zapConfig, err := configLoader.ZapConfigWindows()
 	if err != nil {
 		elog.Error(12, err.Error())
 		return false, 2
