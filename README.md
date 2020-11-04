@@ -32,6 +32,8 @@ Keytabs operate in a similiar method but there are signifigant differences. At t
 
 Resilency or redundancy can be achieved by running more then one instance of the Tokenmachine server. This should work without conflict as long as the seeds for each entity are the same. Once again it is important that the seeds remain secret.
 
+TokenMachine uses LibTokenMachine](https://github.com/jodydadescott/libtokenmachine)
+
 ### Operation
 
 Operatioally the process works like this. Client is the user or machine that desires a SharedSecret or Keytab, Server is this (the TokenMachine) and Identity Provider (IDP) is the provider of tokens (outside our concern).
@@ -47,6 +49,7 @@ The authorization process for entitlement and nonce is done with an operator pro
 
 ### Redundancy
 
+Can be achieved by running discrete instances of the TokenMachine server. This is possible because the SharedSecret secret and Keytab principal password are derived from a seed. If the configuration is the same on discrete instances and the clock is synchronized then secret or password will be the same.
 
 
 ## Installation
