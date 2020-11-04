@@ -32,6 +32,19 @@ Keytabs operate in a similiar method but there are signifigant differences. At t
 
 Resilency or redundancy can be achieved by running more then one instance of the Tokenmachine server. This should work without conflict as long as the seeds for each entity are the same. Once again it is important that the seeds remain secret.
 
+### Operation
+
+Operatioally the process works like this. Client is the user or machine that desires a SharedSecret or Keytab, Server is this (the TokenMachine) and Identity Provider (IDP) is the provider of tokens (outside our concern).
+
+1. The Client obtains a token from their IDP
+1. The Client uses the token to request a Nonce from the Server
+1. The Server validates that the Client is authroized and returns a Nonce to the Client
+1. The Client obtains a new token from their IDP with the Nonce value encoded somewhere in the token (such as audience)
+1. The client request a SharedSecret or Keytab with the new token from the Server
+1. The Server authorizes the request by checking to see if the Client is entitled to the requested entity and that a valid Nonce is present in the token
+
+The authorization process for entitlement and nonce is done with an operator provided OPA/Rego policy.
+
 ## Installation
 
 Tokenmachine is supported on Windows, Linux and Darwin. Keytabs can only be provided when running on a Windows server that is either a Domain Controller or is part of a Domain. For Linux and Darwin only dummy Keytabs will be provided.

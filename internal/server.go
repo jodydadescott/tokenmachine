@@ -71,12 +71,12 @@ func (config *Config) Build() (*Server, error) {
 	}
 
 	libTokenMachineConfig := &libtokenmachine.Config{
-		Policy:         config.Policy,
-		NonceLifetime:  config.NonceLifetime,
-		SecretSecrets:  config.SecretSecrets,
-		KeytabKeytabs:  config.KeytabKeytabs,
-		KeytabLifetime: config.KeytabLifetime,
-		SecretLifetime: config.SharedSecretLifetime,
+		Policy:               config.Policy,
+		NonceLifetime:        config.NonceLifetime,
+		SecretSecrets:        config.SecretSecrets,
+		KeytabKeytabs:        config.KeytabKeytabs,
+		KeytabLifetime:       config.KeytabLifetime,
+		SharedSecretLifetime: config.SharedSecretLifetime,
 	}
 
 	libTokenMachine, err := serverlib.NewInstance(libTokenMachineConfig)
