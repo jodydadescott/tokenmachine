@@ -45,6 +45,10 @@ Operatioally the process works like this. Client is the user or machine that des
 
 The authorization process for entitlement and nonce is done with an operator provided OPA/Rego policy.
 
+### Redundancy
+
+
+
 ## Installation
 
 Tokenmachine is supported on Windows, Linux and Darwin. Keytabs can only be provided when running on a Windows server that is either a Domain Controller or is part of a Domain. For Linux and Darwin only dummy Keytabs will be provided.
@@ -106,4 +110,8 @@ Run the server with the command
 
 ## Example
 
-[Example client scripts](example)
+### Config
+[Example Config](example/config)
+
+### Client(s)
+[Example Config](example/clients)
