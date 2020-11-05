@@ -1,5 +1,7 @@
 # TokenMachine
 
+Insert OAUTH Token, take out Kerberos Keytabs or Shared Secret.
+
 ![TokenMachine icon](icon/tokenmachine.png)
 
 ## Overview
