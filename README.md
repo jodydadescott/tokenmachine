@@ -1,5 +1,7 @@
 # TokenMachine
 
+![TokenMachine icon](icon/tokenmachine.png)
+
 ## Overview
 
 ### What
