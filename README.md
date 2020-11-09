@@ -119,7 +119,13 @@ Run the server with the command
 
 **Q:** What is a Keytab?
 
-A: A key
+**A**: Answer
+
+##
+
+**Q:** What is a Keytab?
+
+**A**: Answer
 
 ## Example
 
