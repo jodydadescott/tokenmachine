@@ -140,4 +140,4 @@ Run the server with the command
 
 ## Misc
 
-TokenMachine uses LibTokenMachine](https://github.com/jodydadescott/libtokenmachine)
+TokenMachine uses [LibTokenMachine](https://github.com/jodydadescott/libtokenmachine)
