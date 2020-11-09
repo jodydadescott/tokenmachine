@@ -12,18 +12,43 @@ Grants shared secrets (SharedSecret) and Kerberos Keytabs (Keytab) to bearers of
 
 All use cases require that you have an Identity Provider (IDP) capable of providing your applications with an OAUTH token and that the public key is accessible via https by following the issuer (iss) in the token.
 
-### Keytab Use Case
-
 1. You have an application that uses Kerberos Keytabs to obtain Kerberos tickets which are then used to access resources such as a Windows SMB filesystem. You are concered about security specifically the Keytab escaping from the authorized application.
 
-1. you
+1. You have an distributed application that uses shared secrets. You are concerned about the shared secret escaping outside of the distributed application.
 
+## Types
 
-OAUTH tokens have become very popular in modern application development to authenticate and authorize API calls but many applications use Kerberos or shared secrets.
+### Keytab
 
-### How
+A Kerberos Keytabs is a file that contains one or more credential pairs. A credential pair is a principal and encrypted password. The password is encrypted by the Kerberos controller with a domain secret. In practice most Keytabs hold a single principal. Currenly TokenMachine only supports one principal per Keytab. The **Keytab** type has a name, principal and a Kerberos Keytab file encoded as Base64 encoded string. The name is given by the administrator and may or may not be the same as the principal. The principal is the domain user + the domain name.
 
-Users must be able to obtain OAUTH tokens from their identity provider (IDP). Using the token they can request SharedSecrets or Keytabs from the TokenMachine. TokenMachine will authenticate and authorize the request by executing an OPA/Rego policy defined by the operator. Tokens will be validated by obtaining the public key from the issuer. A Nonce mechanism has also been created to prevent replay attacks.
+```json
+{
+  "name": "user",
+  "exp": 1604948339,
+  "principal": "user@EXAMPLE.COM",
+  "Base64File": "base 64 encoded file"
+}
+```
+
+### SharedSecret
+
+The **SharedSecret** type holds a secret and an expiration time 
+
+```json
+{
+  "name": "this",
+  "secret": "the secret",
+  "exp": 1604948339,
+  "nextSecret": "the next secret",
+  "nextExp": 1604948939
+}
+
+```
+
+### SharedSecret
+
+SharedSecrets
 
 ### More
 
