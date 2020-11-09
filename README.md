@@ -20,20 +20,20 @@ All use cases require that you have an Identity Provider (IDP) capable of provid
 
 ### Keytab
 
-A Kerberos Keytabs is a file that contains one or more credential pairs. A credential pair is a principal and encrypted password. The password is encrypted by the Kerberos controller with a domain secret. In practice most Keytabs hold a single principal. Currenly TokenMachine only supports one principal per Keytab. The **Keytab** type has a name, principal and a Kerberos Keytab file encoded as Base64 encoded string. The name is given by the administrator and may or may not be the same as the principal. The principal is the domain user + the domain name.
+A Kerberos Keytabs is a file that contains one or more credential pairs. A credential pair is a principal and encrypted password. The password is encrypted by the Kerberos controller with a domain secret. In practice most Keytabs hold a single principal. Currenly TokenMachine only supports one principal per Keytab. The **Keytab** type has a name, principal, expiration (exp) and a Kerberos Keytab (base64File). The  name is assigned by the administrator and may or may not be the same as the principal.  The principal is the domain user + the domain name. The expiration (exp) is the time in UNIX epoch seconds when the Keytab will no longer be valid. Finally the base64File is the aforementioned Keytab file encoded in a Base64 string.
 
 ```json
 {
   "name": "user",
   "exp": 1604948339,
   "principal": "user@EXAMPLE.COM",
-  "Base64File": "base 64 encoded file"
+  "base64File": "base 64 encoded file"
 }
 ```
 
 ### SharedSecret
 
-The **SharedSecret** type holds a secret and an expiration time 
+The **SharedSecret** type holds a name, secret and expiration (exp). If may also contain a nextSecret and nextExp. The name is assigned by the administrator. The secret is self explanatory. The expiration (exp) is the time in UNIX epoch seconds when the SharedSecret will no longer be valid. If the half life of the secret has been reached the fields nextSecret and nextExp will be present. These are the values of secret and expiration (exp) in the next period.
 
 ```json
 {
@@ -45,30 +45,15 @@ The **SharedSecret** type holds a secret and an expiration time
 }
 
 ```
-
-### SharedSecret
-
-SharedSecrets
-
-### More
-
-When an application or user (client) desires a resource from the Tokenmachine they must first acquire an OAUTH compliant token (bearer token) from their Identity Provider (IDP). Using this bearer token the client should request a Nonce from the Tokenmachine. The Tokenmachine will authorize the Nonce request and if authorized return a time scoped Nonce. The Nonce will contain both a secret and an expiration time. The client should obtain a new token from their IDP with the Nonce secret encoded in the claims. The client should then use the bearer token to make one or more requests to the Tokenmachine before the Nonce expires.
-
-SharedSecrets contain a Secret and an expiration (exp) time in epoch seconds. If the SharedSecret has reached half-life then the fields NextSecret and NextExp will be present. These fields represent the next period Secret and expiration. It is up to the user to make use of the SharedSecret and coordinate the period changes.
-
-Keytabs contain a base64 Keytab file in the field Base64File and a Kerberos principal in the field Principal. It is not currently possible to provide the next Keytab as it is for a SharedSecret. Generally, the user should obtain a Keytab when required and then discard it.
-
-Authentication and authorization are performed by validating a bearers token signature and executing a pre-configured OPA/Rego policy. The signature validation works by following the tokens issuer and obtaining the public key. The issuer's name must match the TLS certificate in the HTTPS request. The OPA/Rego policy may also be used to prevent replay attacks by checking to see if a nonce pattern is inside the payload of the bearer token.
-
-The Tokenmachine server works by being preconfigured with SharedSecrets and Keytabs. We will refer to these as entities for short. Both entities must be configured with a seed. This seed should be kept secret as it will be used to generate the secret for the SharedSecret and the password for the Keytab principal. Each entity must also be configured with a Lifetime in seconds. Each entity will have a time period calculated by taking the seconds since epoch and dividing it by the Lifetime and removing the remainder. This will provide us with the current period and by adding the lifetime to this we can determine the next period.
-
-When a request for a SharedSecret is made the current time period is determined and the seed is used to obtain a one-time code. This is then appended to the seed and an SHA-256 hash is calculated. This will be converted into an alpha-numeric string.
-
-Keytabs operate in a similar method but there are significant differences. At the top of each period, Keytabs are created using a password that is derived in a similar method to how SharedSecrets are created. This is stored in a map that is read from when a request for a Keytab is made.
+### Resiliency / Redundancy
 
 Resiliency or redundancy can be achieved by running more than one instance of the Tokenmachine server. This should work without conflict as long as the seeds for each entity are the same. Once again the seeds must remain secret.
 
-TokenMachine uses LibTokenMachine](https://github.com/jodydadescott/libtokenmachine)
+### Replay Attack Prevention
+
+TokenMachine provides nonces to authroized bearer token holders. The bearer can then obtain a new token with the nonce encapsulated inside the new token. The OPA/Rego policy can be used to verify the presence of the nonce in the token claims. For example the nonce may be held in the audience (aud) field. The OPA/Rego policy allows flexibility on the placement of this token.
+
+
 
 ### Operation
 
@@ -147,20 +132,12 @@ Run the server with the command
 ./tokenmachine --config example.yaml
 ```
 
-## FAQ
-
-**Q:** What is a Keytab?
-
-**A**: Answer
-
-##
-
-**Q:** What is a Keytab?
-
-**A**: Answer
-
 ## Example
 
 [Config](example/config)
 
 [Clients](example/clients)
+
+## Misc
+
+TokenMachine uses LibTokenMachine](https://github.com/jodydadescott/libtokenmachine)
