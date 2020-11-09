@@ -8,6 +8,8 @@ Insert OAUTH Token, take out Kerberos Keytabs or Shared Secret.
 
 Grants shared secrets (SharedSecret) and Kerberos Keytabs (Keytab) to bearers of authorized OAUTH tokens using the Open Policy Agent (OPA) Rego language. Distributed operation and replay attack prevention are also implemented.
 
+Keytabs are only supported when ran on a Windows Active Directory Domain Server or a Windows Server that is a member of a domain.
+
 ## Use Case
 
 All use cases require that you have an Identity Provider (IDP) capable of providing your applications with an OAUTH token and that the public key is accessible via https by following the issuer (iss) in the token.
