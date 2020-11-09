@@ -117,7 +117,7 @@ Run the server with the command
 
 ## FAQ
 
-Q: What is a Keytab?
+**Q:** What is a Keytab?
 
 A: A key
 
