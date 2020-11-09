@@ -4,13 +4,20 @@ Insert OAUTH Token, take out Kerberos Keytabs or Shared Secret.
 
 ![TokenMachine icon](icon/tokenmachine.png)
 
-## Overview
+## TL; DR
 
-### What
+Grants shared secrets (SharedSecret) and Kerberos Keytabs (Keytab) to bearers of authorized OAUTH tokens using the Open Policy Agent (OPA) Rego language. Distributed operation and replay attack prevention are also implemented.
 
-Grants SharedSecrets, Kerberos Keytabs, and Nonces to bearers of authorized OAUTH tokens.
+## Use Case
 
-### Why
+All use cases require that you have an Identity Provider (IDP) capable of providing your applications with an OAUTH token and that the public key is accessible via https by following the issuer (iss) in the token.
+
+### Keytab Use Case
+
+1. You have an application that uses Kerberos Keytabs to obtain Kerberos tickets which are then used to access resources such as a Windows SMB filesystem. You are concered about security specifically the Keytab escaping from the authorized application.
+
+1. you
+
 
 OAUTH tokens have become very popular in modern application development to authenticate and authorize API calls but many applications use Kerberos or shared secrets.
 
