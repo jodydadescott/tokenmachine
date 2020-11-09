@@ -115,10 +115,14 @@ Run the server with the command
 ./tokenmachine --config example.yaml
 ```
 
+## FAQ
+
+Q: What is a Keytab?
+
+A: A key
+
 ## Example
 
 [Config](example/config)
 
 [Clients](example/clients)
-
-[Video](https://github.com/jodydadescott/tokenmachine/blob/master/example/video/TokenMachine.mp4?raw=true)
